@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Login - RHHS Green Classroom Champion</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h2>🔐 Staff Login</h2>
+      
+      <div id="alertContainer"></div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required 
+                 placeholder="your.email@rhhs.edu">
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required 
+                 placeholder="Enter your password">
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Login
+        </button>
+      </form>
+      
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <a href="../index.html" style="color: #3498db; text-decoration: none;">
+          ← Back to Leaderboard
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <!-- Firebase Config -->
+  <script src="../js/firebase-config.js"></script>
+  
+  <!-- Login Script -->
+  <script src="../js/auth.js"></script>
+</body>
+</html>

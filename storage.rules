@@ -1,0 +1,21 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Default: No public access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+    
+    // Example: User profile images (if needed in future)
+    match /profiles/{userId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Example: Class images (if needed in future)
+    match /classes/{classId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

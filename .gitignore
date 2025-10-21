@@ -1,0 +1,49 @@
+# Firebase Configuration (IMPORTANT: Don't commit your actual API keys!)
+js/firebase-config.js
+
+# Firebase Cache
+.firebase/
+*-debug.log
+firebase-debug*.log
+
+# Node modules (if using npm for Firebase tools)
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build files (if you add build tools later)
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Firebase deployment history
+.firebaserc
+firebase-debug.log

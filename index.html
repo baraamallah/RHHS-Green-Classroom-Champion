@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RHHS Green Classroom Champion - Leaderboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>
+      <span class="logo">🏆</span>
+      RHHS Green Classroom Champion
+    </h1>
+    <div class="header-actions">
+      <a href="pages/admin-login.html" class="btn btn-outline" style="margin-right: 0.5rem;">Admin Login</a>
+      <a href="pages/supervisor-login.html" class="btn btn-outline">Supervisor Login</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">🌿 Live Leaderboard</div>
+      <div id="lastUpdated" style="text-align: right; color: #7f8c8d; margin-bottom: 1rem;">
+        Loading...
+      </div>
+      <div id="leaderboardContent">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <!-- Firebase Config -->
+  <script src="js/firebase-config.js"></script>
+  
+  <!-- Leaderboard Script -->
+  <script>
+    // Listen to real-time updates from Firestore
+    function loadLeaderboard() {
+      db.collection('classes')
+        .orderBy('points', 'desc')
+        .onSnapshot((snapshot) => {
+          const classes = [];
+          snapshot.forEach((doc) => {
+            classes.push({ id: doc.id, ...doc.data() });
+          });
+          
+          displayLeaderboard(classes);
+          updateTimestamp();
+        }, (error) => {
+          console.error('Error loading leaderboard:', error);
+          document.getElementById('leaderboardContent').innerHTML = 
+            '<div class="alert alert-error">Error loading leaderboard. Please refresh the page.</div>';
+        });
+    }
+
+    function displayLeaderboard(classes) {
+      const content = document.getElementById('leaderboardContent');
+      
+      if (classes.length === 0) {
+        content.innerHTML = '<p style="text-align: center; color: #7f8c8d;">No classes yet. Check back soon!</p>';
+        return;
+      }
+
+      let html = `
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Class Name</th>
+              <th>Teacher</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      classes.forEach((cls, index) => {
+        const rank = index + 1;
+        const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+        
+        html += `
+          <tr>
+            <td>
+              <span class="rank-badge ${rankClass}">${rank}</span>
+            </td>
+            <td><strong>${cls.name}</strong></td>
+            <td>${cls.teacher || 'N/A'}</td>
+            <td>
+              <span class="points-badge">${cls.points || 0} pts</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      content.innerHTML = html;
+    }
+
+    function updateTimestamp() {
+      const now = new Date();
+      document.getElementById('lastUpdated').textContent = 
+        `Last updated: ${now.toLocaleString()}`;
+    }
+
+    // Initialize leaderboard on page load
+    window.addEventListener('DOMContentLoaded', loadLeaderboard);
+  </script>
+</body>
+</html>

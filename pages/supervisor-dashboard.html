@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supervisor Dashboard - RHHS Green Classroom Champion</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>
+      <span class="logo">📝</span>
+      Supervisor Dashboard
+    </h1>
+    <div class="header-actions">
+      <span id="userName" style="margin-right: 1rem; color: white;"></span>
+      <a href="../index.html" class="btn btn-secondary">View Leaderboard</a>
+      <button onclick="logout()" class="btn btn-danger">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Add Points Section -->
+    <div class="card">
+      <div class="card-header">➕ Add Points to Class</div>
+      <form id="addPointsForm">
+        <div class="form-group">
+          <label for="selectClass">Select Class</label>
+          <select id="selectClass" required>
+            <option value="">Loading classes...</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="pointsToAdd">Points to Add</label>
+          <input type="number" id="pointsToAdd" required 
+                 placeholder="Enter points (positive or negative)">
+          <small style="color: #7f8c8d;">Use positive numbers to add points, negative to deduct</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="pointsReason">Reason</label>
+          <textarea id="pointsReason" rows="3" required 
+                    placeholder="Why are you awarding/deducting these points?"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Points</button>
+      </form>
+    </div>
+
+    <!-- Current Leaderboard -->
+    <div class="card">
+      <div class="card-header">🏆 Current Standings</div>
+      <div id="leaderboardContent">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <div class="card-header">📊 My Recent Activity</div>
+      <div id="activityContent">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <!-- Firebase Config -->
+  <script src="../js/firebase-config.js"></script>
+  
+  <!-- Auth Script -->
+  <script src="../js/auth.js"></script>
+  
+  <!-- Supervisor Dashboard Script -->
+  <script src="../js/supervisor-dashboard.js"></script>
+  
+  <script>
+    // Check if user is supervisor
+    checkAuth('supervisor');
+    
+    // Display user name
+    window.addEventListener('DOMContentLoaded', () => {
+      const userName = sessionStorage.getItem('userName');
+      if (userName) {
+        document.getElementById('userName').textContent = `Welcome, ${userName}`;
+      }
+    });
+  </script>
+</body>
+</html>

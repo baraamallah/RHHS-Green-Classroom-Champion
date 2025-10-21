@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - RHHS Green Classroom Champion</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>
+      <span class="logo">⚙️</span>
+      Admin Dashboard
+    </h1>
+    <div class="header-actions">
+      <span id="userName" style="margin-right: 1rem; color: white;"></span>
+      <a href="../index.html" class="btn btn-secondary">View Leaderboard</a>
+      <button onclick="logout()" class="btn btn-danger">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Statistics -->
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <h3>Total Classes</h3>
+        <div class="stat-value" id="totalClasses">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total Supervisors</h3>
+        <div class="stat-value" id="totalSupervisors">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total Points Awarded</h3>
+        <div class="stat-value" id="totalPoints">0</div>
+      </div>
+    </div>
+
+    <!-- Manage Supervisors -->
+    <div class="card">
+      <div class="card-header">👥 Manage Supervisors</div>
+      <button onclick="openAddSupervisorModal()" class="btn btn-primary">
+        + Add Supervisor
+      </button>
+      <div id="supervisorsContent">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Manage Classes -->
+    <div class="card">
+      <div class="card-header">🏫 Manage Classes</div>
+      <button onclick="openAddClassModal()" class="btn btn-primary">
+        + Add Class
+      </button>
+      <div id="classesContent">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Recent Points Activity -->
+    <div class="card">
+      <div class="card-header">📊 Recent Points Activity</div>
+      <div id="activityContent">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Supervisor Modal -->
+  <div id="addSupervisorModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Supervisor</h3>
+        <button class="modal-close" onclick="closeModal('addSupervisorModal')">&times;</button>
+      </div>
+      <form id="addSupervisorForm">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="supervisorName" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="supervisorEmail" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="supervisorPassword" required minlength="6">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Supervisor</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Class Modal -->
+  <div id="addClassModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Class</h3>
+        <button class="modal-close" onclick="closeModal('addClassModal')">&times;</button>
+      </div>
+      <form id="addClassForm">
+        <div class="form-group">
+          <label>Class Name</label>
+          <input type="text" id="className" required placeholder="e.g., Grade 9A">
+        </div>
+        <div class="form-group">
+          <label>Teacher Name</label>
+          <input type="text" id="classTeacher" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Class</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Class Modal -->
+  <div id="editClassModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Class</h3>
+        <button class="modal-close" onclick="closeModal('editClassModal')">&times;</button>
+      </div>
+      <form id="editClassForm">
+        <input type="hidden" id="editClassId">
+        <div class="form-group">
+          <label>Class Name</label>
+          <input type="text" id="editClassName" required>
+        </div>
+        <div class="form-group">
+          <label>Teacher Name</label>
+          <input type="text" id="editClassTeacher" required>
+        </div>
+        <div class="form-group">
+          <label>Points</label>
+          <input type="number" id="editClassPoints" required min="0">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Class</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <!-- Firebase Config -->
+  <script src="../js/firebase-config.js"></script>
+  
+  <!-- Auth Script -->
+  <script src="../js/auth.js"></script>
+  
+  <!-- Admin Dashboard Script -->
+  <script src="../js/admin-dashboard.js"></script>
+  
+  <script>
+    // Check if user is admin
+    checkAuth('admin');
+    
+    // Display user name
+    window.addEventListener('DOMContentLoaded', () => {
+      const userName = sessionStorage.getItem('userName');
+      if (userName) {
+        document.getElementById('userName').textContent = `Welcome, ${userName}`;
+      }
+    });
+  </script>
+</body>
+</html>
